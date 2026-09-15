@@ -61,7 +61,7 @@ foreach ($tasks as $task) {
     <title>Concierge</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body><div class="row"><div class="column">
     <div class="container">
         <h1>Concierge</h1>
 
@@ -106,6 +106,11 @@ foreach ($tasks as $task) {
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
-    </div>
+    </div></div></div>
+<div class="row">
+    <div class="column">
+
+                            </div></div>
+
 </body>
 </html>

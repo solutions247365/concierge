@@ -25,7 +25,7 @@ body {
 }
 
 h1, h2 {
-    text-align: right;
+    text-align: center;
 }
 
 .container {
@@ -152,7 +152,7 @@ li.class-4 { border-left-color: var(--class-4); }
 }
 
 .empty-state {
-    text-align: right;
+    text-align: center;
     color: var(--muted);
     padding: 1rem;
 }
