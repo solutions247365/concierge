@@ -1,0 +1,188 @@
+:root {
+    --bg: #0a0a0d;
+    --card: #1b1b21;
+    --text: #e7e7ec;
+    --muted: #9a9aa5;
+    --border: #34343c;
+    --accent: #4f46e5;
+    --class-1: #ef4444;
+    --class-2: #f59e0b;
+    --class-3: #3b82f6;
+    --class-4: #9ca3af;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem 1rem;
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Cinzel";
+    background-color: var(--bg);
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>"),
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.10), transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(150, 130, 210, 0.14), transparent 45%),
+        radial-gradient(circle at 50% 95%, rgba(90, 100, 150, 0.12), transparent 55%),
+        linear-gradient(160deg, #050506 0%, #1a1a20 45%, #08080a 100%);
+    background-blend-mode: overlay, screen, screen, screen, normal;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.container {
+    max-width: auto;
+    margin: 0 auto;
+}
+
+form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+label {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+label[for="task"],
+label[for="due_date"] {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="date"] {
+    padding: 0.5rem 0.6rem;
+    border: 3px solid var(--border);
+    border-radius: 18px;
+    font-size: 0.95rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.checkbox-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.checkbox-field label {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+#task {
+    flex: 0 1 auto;
+    width: 80%;
+}
+
+
+.btn-glow {
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Visible base glow */
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-glow:hover {
+  /* Intensified glow on hover */
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+  transform: translateY(-2px);
+}
+.btn-glow-gradient {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  animation: glowGradient 3s ease-in-out infinite;
+}
+
+@keyframes glowGradient {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(99, 102, 241, 0.5),
+      0 0 40px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(139, 92, 246, 0.6),
+      0 0 60px rgba(99, 102, 241, 0.4);
+  }
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+li {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--muted);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+li.class-1 { border-left-color: var(--class-1); }
+li.class-2 { border-left-color: var(--class-2); }
+li.class-3 { border-left-color: var(--class-3); }
+li.class-4 { border-left-color: var(--class-4); }
+
+.due-date {
+    color: var(--muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 1rem;
+}
