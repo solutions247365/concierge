@@ -78,18 +78,48 @@ input[type="date"] {
     flex: 1 1 200px;
 }
 
-button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.55rem 1.1rem;
-    font-size: 0.95rem;
-    cursor: pointer;
+
+.btn-glow {
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Visible base glow */
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
 }
 
-button:hover {
-    opacity: 0.9;
+.btn-glow:hover {
+  /* Intensified glow on hover */
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+  transform: translateY(-2px);
+}
+.btn-glow-gradient {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  animation: glowGradient 3s ease-in-out infinite;
+}
+
+@keyframes glowGradient {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(99, 102, 241, 0.5),
+      0 0 40px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(139, 92, 246, 0.6),
+      0 0 60px rgba(99, 102, 241, 0.4);
+  }
 }
 
 ul {

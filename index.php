@@ -59,40 +59,53 @@ foreach ($tasks as $task) {
 <head>
     <meta charset="UTF-8">
     <title>Concierge</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="" method="post">
-        <label for="task">Task:</label>
-        <input type="text" id="task" name="task" required>
+    <div class="container">
+        <h1>Concierge</h1>
 
-        <label for="due_date">Due date:</label>
-        <input type="date" id="due_date" name="due_date">
+        <form action="" method="post">
+            <div>
+                <label for="task">Task</label>
+                <input type="text" id="task" name="task" required>
+            </div>
 
-        <label for="important">
-            <input type="checkbox" id="important" name="important">
-            Important
-        </label>
+            <div>
+                <label for="due_date">Due date</label>
+                <input type="date" id="due_date" name="due_date">
+            </div>
 
-        <label for="urgent">
-            <input type="checkbox" id="urgent" name="urgent">
-            Urgent
-        </label>
+            <div class="checkbox-field">
+                <input type="checkbox" id="important" name="important">
+                <label for="important">Important</label>
+            </div>
 
-        <button type="submit">Add Task</button>
-    </form>
+            <div class="checkbox-field">
+                <input type="checkbox" id="urgent" name="urgent">
+                <label for="urgent">Urgent</label>
+            </div>
 
-    <h2>Tasks</h2>
-    <ul>
-        <?php foreach ($tasks_by_class as $class_tasks): ?>
-            <?php foreach ($class_tasks as $task): ?>
-                <li>
-                    <?= htmlspecialchars($task['text']) ?>
-                    <?php if (!empty($task['due_date'])): ?>
-                        (due <?= htmlspecialchars($task['due_date']) ?>)
-                    <?php endif; ?>
-                </li>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-    </ul>
+            <button type="submit" class="btn-glow-gradient">Add Task</button>
+        </form>
+
+        <h2>Tasks</h2>
+        <?php if (empty($tasks)): ?>
+            <p class="empty-state">No tasks yet.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($tasks_by_class as $class => $class_tasks): ?>
+                    <?php foreach ($class_tasks as $task): ?>
+                        <li class="class-<?= $class ?>">
+                            <span><?= htmlspecialchars($task['text']) ?></span>
+                            <?php if (!empty($task['due_date'])): ?>
+                                <span class="due-date">Due <?= htmlspecialchars($task['due_date']) ?></span>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
 </body>
 </html>
