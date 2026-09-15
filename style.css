@@ -18,9 +18,9 @@
 body {
     margin: 0;
     padding: 2rem 1rem;
-    background: var(--bg);
+    background: grey;
     color: var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: system-ui, -apple-system, "Cinzel";
     padding: 20px;
 }
 
@@ -29,7 +29,7 @@ h1, h2 {
 }
 
 .container {
-    max-width: 1640px;
+    max-width: auto;
     margin: 0 auto;
 }
 
@@ -55,8 +55,8 @@ label {
 input[type="text"],
 input[type="date"] {
     padding: 0.5rem 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    border: 3px solid var(--border);
+    border-radius: 18px;
     font-size: 0.95rem;
 }
 
@@ -152,7 +152,7 @@ li.class-4 { border-left-color: var(--class-4); }
 }
 
 .empty-state {
-    text-align: center;
+    text-align: right;
     color: var(--muted);
     padding: 1rem;
 }
