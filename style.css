@@ -502,7 +502,7 @@ li.completed .done-btn {
 }
 
 /* Tablet and below: let the toolbar wrap instead of scrolling sideways. */
-@media (max-width: 720px) {
+@media (max-width: 1100px) {
     .task-form {
         flex-wrap: wrap;
         overflow-x: visible;
