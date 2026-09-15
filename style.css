@@ -1,0 +1,131 @@
+:root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1f2430;
+    --muted: #6b7280;
+    --border: #e2e4e9;
+    --accent: #4f46e5;
+    --class-1: #ef4444;
+    --class-2: #f59e0b;
+    --class-3: #3b82f6;
+    --class-4: #9ca3af;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: end;
+    margin-bottom: 2rem;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+label {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+input[type="text"],
+input[type="date"] {
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.checkbox-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.checkbox-field label {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+#task {
+    flex: 1 1 200px;
+}
+
+button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+li {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--muted);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+li.class-1 { border-left-color: var(--class-1); }
+li.class-2 { border-left-color: var(--class-2); }
+li.class-3 { border-left-color: var(--class-3); }
+li.class-4 { border-left-color: var(--class-4); }
+
+.due-date {
+    color: var(--muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 1rem;
+}
