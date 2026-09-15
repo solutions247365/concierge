@@ -75,11 +75,22 @@ label[for="due_date"] {
 }
 
 input[type="text"],
-input[type="date"] {
+input[type="date"],
+input[type="search"] {
     padding: 0.5rem 0.6rem;
     border: 3px solid var(--border);
     border-radius: 18px;
     font-size: 0.95rem;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.search-input {
+    width: 220px;
+}
+
+.search-input::placeholder {
+    color: var(--muted);
 }
 
 .checkbox-group {
@@ -207,4 +218,77 @@ li.class-4 { border-left-color: var(--class-4); }
 
 .column {
     flex: 1 1 300px;
+}
+
+.calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.cal-arrow {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cal-arrow:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.cal-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.cal-day {
+    width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.cal-weekday {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.cal-date {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+    margin-bottom: 1rem;
+}
+
+.cal-tasks {
+    text-align: left;
+}
+
+.cal-tasks li {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+.cal-empty {
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.9rem;
 }

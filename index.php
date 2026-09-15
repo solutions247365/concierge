@@ -114,6 +114,8 @@ $tasks = $db->query('
                 </div>
 
                 <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
+
+                <input type="search" id="task-search" class="search-input" placeholder="Search tasks or due date&hellip;">
             </div>
         </form>
 
@@ -123,7 +125,7 @@ $tasks = $db->query('
                 <?php if (empty($tasks)): ?>
                     <p class="empty-state">No tasks yet.</p>
                 <?php else: ?>
-                    <ul>
+                    <ul id="task-list">
                         <?php foreach ($tasks as $task): ?>
                             <li class="class-<?= $task['class'] ?>">
                                 <span><?= htmlspecialchars($task['text']) ?></span>
@@ -133,11 +135,31 @@ $tasks = $db->query('
                             </li>
                         <?php endforeach; ?>
                     </ul>
+                    <p class="empty-state" id="search-empty" hidden>No tasks match your search.</p>
                 <?php endif; ?>
             </div>
 
-            <div class="column"></div>
+            <div class="column">
+                <div class="calendar">
+                    <button type="button" class="cal-arrow" id="cal-prev" aria-label="Previous day">&#8249;</button>
+                    <div class="cal-day">
+                        <div class="cal-weekday" id="cal-weekday"></div>
+                        <div class="cal-date" id="cal-date"></div>
+                        <ul class="cal-tasks" id="cal-tasks"></ul>
+                    </div>
+                    <button type="button" class="cal-arrow" id="cal-next" aria-label="Next day">&#8250;</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        window.CAL_TASKS = <?= json_encode(array_map(fn($t) => [
+            'text' => $t['text'],
+            'due_date' => $t['due_date'],
+            'class' => (int) $t['class'],
+        ], $tasks), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    </script>
+    <script src="app.js"></script>
 </body>
 </html>
