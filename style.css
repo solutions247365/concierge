@@ -19,7 +19,7 @@ body {
     margin: 0;
     padding: 2rem 1rem;
     color: var(--text);
-    font-family: system-ui, -apple-system, "Cinzel";
+    font-family: "Cinzel";
     background-color: var(--bg);
     background-image:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>"),
@@ -83,10 +83,11 @@ input[type="date"] {
 
 .checkbox-group {
     display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    align-items: flex-start;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .checkbox-field {
@@ -101,8 +102,8 @@ input[type="date"] {
 }
 
 #task {
-    flex: 0 1 auto;
-    width: 80%;
+    flex: 1 1 100%;
+    width: 100%;
 }
 
 
@@ -185,4 +186,15 @@ li.class-4 { border-left-color: var(--class-4); }
     text-align: center;
     color: var(--muted);
     padding: 1rem;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.column {
+    flex: 1 1 300px;
 }

@@ -110,25 +110,31 @@ $tasks = $db->query('
                     <label for="urgent">Urgent (used if no due date)</label>
                 </div>
 
-                <button type="submit" class="btn-glow-gradient">Add Task</button>
+                <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
             </div>
         </form>
 
-        <h2>Tasks</h2>
-        <?php if (empty($tasks)): ?>
-            <p class="empty-state">No tasks yet.</p>
-        <?php else: ?>
-            <ul>
-                <?php foreach ($tasks as $task): ?>
-                    <li class="class-<?= $task['class'] ?>">
-                        <span><?= htmlspecialchars($task['text']) ?></span>
-                        <?php if (!empty($task['due_date'])): ?>
-                            <span class="due-date">Due <?= htmlspecialchars($task['due_date']) ?></span>
-                        <?php endif; ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+        <div class="columns">
+            <div class="column">
+                <h2>Tasks</h2>
+                <?php if (empty($tasks)): ?>
+                    <p class="empty-state">No tasks yet.</p>
+                <?php else: ?>
+                    <ul>
+                        <?php foreach ($tasks as $task): ?>
+                            <li class="class-<?= $task['class'] ?>">
+                                <span><?= htmlspecialchars($task['text']) ?></span>
+                                <?php if (!empty($task['due_date'])): ?>
+                                    <span class="due-date">Due <?= htmlspecialchars($task['due_date']) ?></span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+
+            <div class="column"></div>
+        </div>
     </div>
 </body>
 </html>
