@@ -112,12 +112,8 @@ input[type="date"] {
     cursor: pointer;
 }
 
-.task-field {
-    flex: 1 1 100%;
-}
-
 #task {
-    width: 100%;
+    width: 360px;
 }
 
 

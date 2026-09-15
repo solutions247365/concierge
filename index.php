@@ -92,7 +92,7 @@ $tasks = $db->query('
         <h1>Concierge</h1>
 
         <form action="" method="post">
-            <div class="task-field">
+            <div>
                 <label for="task">Task</label>
                 <input type="text" id="task" name="task" required>
             </div>
