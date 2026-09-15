@@ -163,6 +163,7 @@ input[type="search"] {
     justify-content: flex-start;
     flex-wrap: nowrap;
     flex: 0 0 auto;
+    align-self: center;
 }
 
 .checkbox-field {
