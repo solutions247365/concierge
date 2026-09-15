@@ -160,18 +160,18 @@ $completed_count = count(array_filter($tasks, fn($t) => (int) $t['completed'] ==
                     <input type="date" id="due_date" name="due_date">
                 </div>
 
-                <div class="action-group">
-                    <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
-
-                    <input type="search" id="task-search" class="search-input" placeholder="Search tasks or due date&hellip;">
-                    <button type="button" id="search-btn" class="search-btn" aria-label="Search">&#128269;</button>
-                </div>
-
                 <div class="checkbox-group">
                     <div class="checkbox-field">
                         <input type="checkbox" id="important" name="important">
                         <label for="important">Important</label>
                     </div>
+                </div>
+
+                <div class="action-group">
+                    <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
+
+                    <input type="search" id="task-search" class="search-input" placeholder="Search tasks or due date&hellip;">
+                    <button type="button" id="search-btn" class="search-btn" aria-label="Search">&#128269;</button>
                 </div>
             </form>
 
