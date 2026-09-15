@@ -50,7 +50,7 @@ form {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
-    align-items: flex-start;
+    align-items: flex-end;
     margin-bottom: 2rem;
 }
 
@@ -94,7 +94,7 @@ input[type="date"] {
 .checkbox-field {
     flex-direction: row;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
 }
 
 .checkbox-field label {
@@ -102,8 +102,21 @@ input[type="date"] {
     font-size: 0.95rem;
 }
 
-#task {
+.checkbox-field input[type="checkbox"] {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin: 0;
+    position: relative;
+    top: 0.35rem;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.task-field {
     flex: 1 1 100%;
+}
+
+#task {
     width: 100%;
 }
 
