@@ -81,12 +81,13 @@ input[type="search"] {
     border: 3px solid var(--border);
     border-radius: 18px;
     font-size: 0.95rem;
+    font-family: 'Cinzel', serif;
     background: var(--bg);
     color: var(--text);
 }
 
 .search-input {
-    width: 220px;
+    width: 280px;
 }
 
 .search-input::placeholder {
@@ -256,6 +257,9 @@ li.class-4 { border-left-color: var(--class-4); }
 
 .cal-day {
     width: 360px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -279,6 +283,7 @@ li.class-4 { border-left-color: var(--class-4); }
 }
 
 .cal-tasks {
+    flex: 1;
     text-align: left;
 }
 
@@ -291,4 +296,5 @@ li.class-4 { border-left-color: var(--class-4); }
     justify-content: center;
     color: var(--muted);
     font-size: 0.9rem;
+    margin: auto;
 }
