@@ -86,9 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($text !== '') {
                 $important = isset($_POST['important']);
                 $due_date = trim($_POST['due_date'] ?? '');
-                // Urgency is derived from the due date whenever one is set; the
-                // checkbox only applies as a fallback when there's no due date.
-                $urgent = $due_date !== '' ? is_due_soon($due_date) : isset($_POST['urgent']);
+                $urgent = is_due_soon($due_date);
                 $stmt = $db->prepare('
                     INSERT INTO tasks (username, text, important, urgent, class, due_date)
                     VALUES (:username, :text, :important, :urgent, :class, :due_date)
@@ -151,7 +149,7 @@ $completed_count = count(array_filter($tasks, fn($t) => (int) $t['completed'] ==
         <?php if ($current_user === ''): ?>
             <p class="empty-state">Enter your name above to start or resume your task list.</p>
         <?php else: ?>
-            <form action="" method="post">
+            <form action="" method="post" class="task-form">
                 <div>
                     <label for="task">Task</label>
                     <input type="text" id="task" name="task" required>
@@ -162,21 +160,18 @@ $completed_count = count(array_filter($tasks, fn($t) => (int) $t['completed'] ==
                     <input type="date" id="due_date" name="due_date">
                 </div>
 
+                <div class="action-group">
+                    <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
+
+                    <input type="search" id="task-search" class="search-input" placeholder="Search tasks or due date&hellip;">
+                    <button type="button" id="search-btn" class="search-btn" aria-label="Search">&#128269;</button>
+                </div>
+
                 <div class="checkbox-group">
                     <div class="checkbox-field">
                         <input type="checkbox" id="important" name="important">
                         <label for="important">Important</label>
                     </div>
-
-                    <div class="checkbox-field">
-                        <input type="checkbox" id="urgent" name="urgent">
-                        <label for="urgent">Urgent (used if no due date)</label>
-                    </div>
-
-                    <button type="submit" class="btn-glow-gradient add-task-btn">Add Task</button>
-
-                    <input type="search" id="task-search" class="search-input" placeholder="Search tasks or due date&hellip;">
-                    <button type="button" id="search-btn" class="search-btn" aria-label="Search">&#128269;</button>
                 </div>
             </form>
 
