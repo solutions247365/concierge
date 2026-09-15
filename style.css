@@ -63,7 +63,7 @@ h1, h2 {
 }
 
 .container {
-    max-width: auto;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -83,6 +83,7 @@ form {
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 1.5rem;
+    justify-content: center;
 }
 
 .action-group {
