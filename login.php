@@ -28,18 +28,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            if (password_verify($password, $user['password_hash'])) {
+            $locked_until = (int) $user['locked_until'];
+            if ($locked_until > time()) {
+                $minutes_left = (int) ceil(($locked_until - time()) / 60);
+                $error = "Too many attempts. Try again in {$minutes_left} minute" . ($minutes_left === 1 ? '' : 's') . '.';
+                log_login_attempt($db, $username, false);
+            } elseif (password_verify($password, $user['password_hash'])) {
+                $reset = $db->prepare('UPDATE users SET failed_attempts = 0, locked_until = 0 WHERE id = :id');
+                $reset->execute(['id' => $user['id']]);
+                log_login_attempt($db, $username, true);
                 $_SESSION['username'] = $username;
                 header('Location: index.php');
                 exit;
+            } else {
+                $attempts = (int) $user['failed_attempts'] + 1;
+                if ($attempts >= MAX_LOGIN_ATTEMPTS) {
+                    $stmt = $db->prepare('UPDATE users SET failed_attempts = 0, locked_until = :locked_until WHERE id = :id');
+                    $stmt->execute(['locked_until' => time() + LOCKOUT_SECONDS, 'id' => $user['id']]);
+                    $error = 'Too many attempts. Try again in 15 minutes.';
+                } else {
+                    $stmt = $db->prepare('UPDATE users SET failed_attempts = :attempts WHERE id = :id');
+                    $stmt->execute(['attempts' => $attempts, 'id' => $user['id']]);
+                    $remaining = MAX_LOGIN_ATTEMPTS - $attempts;
+                    $error = "Incorrect password. {$remaining} attempt" . ($remaining === 1 ? '' : 's') . ' remaining before lockout.';
+                }
+                log_login_attempt($db, $username, false);
             }
-            $error = 'Incorrect password.';
         } else {
             $stmt = $db->prepare('INSERT INTO users (username, password_hash) VALUES (:username, :hash)');
             $stmt->execute([
                 'username' => $username,
                 'hash' => password_hash($password, PASSWORD_DEFAULT),
             ]);
+            log_login_attempt($db, $username, true);
             $_SESSION['username'] = $username;
             header('Location: index.php');
             exit;

@@ -13,6 +13,8 @@ function get_db(): PDO {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
+                failed_attempts INTEGER NOT NULL DEFAULT 0,
+                locked_until INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         ');
@@ -26,6 +28,18 @@ function get_db(): PDO {
                 class INTEGER NOT NULL,
                 due_date TEXT NOT NULL DEFAULT \'\',
                 completed INTEGER NOT NULL DEFAULT 0
+            )
+        ');
+        $db->exec('
+            CREATE TABLE login_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                ip_address TEXT NOT NULL,
+                city TEXT,
+                region TEXT,
+                country TEXT,
+                success INTEGER NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         ');
         return $db;
@@ -47,6 +61,31 @@ function get_db(): PDO {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
+                failed_attempts INTEGER NOT NULL DEFAULT 0,
+                locked_until INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+    } else {
+        $user_columns = $db->query('PRAGMA table_info(users)')->fetchAll(PDO::FETCH_COLUMN, 1);
+        if (!in_array('failed_attempts', $user_columns, true)) {
+            $db->exec('ALTER TABLE users ADD COLUMN failed_attempts INTEGER NOT NULL DEFAULT 0');
+        }
+        if (!in_array('locked_until', $user_columns, true)) {
+            $db->exec('ALTER TABLE users ADD COLUMN locked_until INTEGER NOT NULL DEFAULT 0');
+        }
+    }
+
+    if (!in_array('login_log', $tables, true)) {
+        $db->exec('
+            CREATE TABLE login_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                ip_address TEXT NOT NULL,
+                city TEXT,
+                region TEXT,
+                country TEXT,
+                success INTEGER NOT NULL,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         ');
@@ -59,4 +98,58 @@ function get_db(): PDO {
 // to the same account instead of silently creating separate ones.
 function normalize_username(string $username): string {
     return strtolower(trim($username));
+}
+
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_SECONDS = 15 * 60;
+
+// Best-effort IP geolocation via a free public API. Never let a slow or
+// unreachable lookup block the login flow - on any failure this just
+// leaves city/region/country empty.
+function geolocate_ip(string $ip): array {
+    $empty = ['city' => null, 'region' => null, 'country' => null];
+
+    if ($ip === '' || $ip === '127.0.0.1' || $ip === '::1') {
+        return $empty;
+    }
+
+    $context = stream_context_create(['http' => ['timeout' => 2]]);
+    $response = @file_get_contents(
+        "http://ip-api.com/json/{$ip}?fields=status,city,regionName,country",
+        false,
+        $context
+    );
+
+    if ($response === false) {
+        return $empty;
+    }
+
+    $data = json_decode($response, true);
+    if (!is_array($data) || ($data['status'] ?? '') !== 'success') {
+        return $empty;
+    }
+
+    return [
+        'city' => $data['city'] ?? null,
+        'region' => $data['regionName'] ?? null,
+        'country' => $data['country'] ?? null,
+    ];
+}
+
+function log_login_attempt(PDO $db, string $username, bool $success): void {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    $geo = geolocate_ip($ip);
+
+    $stmt = $db->prepare('
+        INSERT INTO login_log (username, ip_address, city, region, country, success)
+        VALUES (:username, :ip, :city, :region, :country, :success)
+    ');
+    $stmt->execute([
+        'username' => $username,
+        'ip' => $ip,
+        'city' => $geo['city'],
+        'region' => $geo['region'],
+        'country' => $geo['country'],
+        'success' => (int) $success,
+    ]);
 }
