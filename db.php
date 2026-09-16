@@ -13,6 +13,7 @@ function get_db(): PDO {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
+                recovery_key_hash TEXT NOT NULL DEFAULT \'\',
                 failed_attempts INTEGER NOT NULL DEFAULT 0,
                 locked_until INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -61,6 +62,7 @@ function get_db(): PDO {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
+                recovery_key_hash TEXT NOT NULL DEFAULT \'\',
                 failed_attempts INTEGER NOT NULL DEFAULT 0,
                 locked_until INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -73,6 +75,9 @@ function get_db(): PDO {
         }
         if (!in_array('locked_until', $user_columns, true)) {
             $db->exec('ALTER TABLE users ADD COLUMN locked_until INTEGER NOT NULL DEFAULT 0');
+        }
+        if (!in_array('recovery_key_hash', $user_columns, true)) {
+            $db->exec('ALTER TABLE users ADD COLUMN recovery_key_hash TEXT NOT NULL DEFAULT \'\'');
         }
     }
 
@@ -102,6 +107,13 @@ function normalize_username(string $username): string {
 
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_SECONDS = 15 * 60;
+
+// A 32-character hex recovery key, shown to the user exactly once at
+// signup. Only its hash is ever stored - losing it means losing the
+// ability to reset the password or clear a lockout for that account.
+function generate_recovery_key(): string {
+    return bin2hex(random_bytes(16));
+}
 
 // Best-effort IP geolocation via a free public API. Never let a slow or
 // unreachable lookup block the login flow - on any failure this just

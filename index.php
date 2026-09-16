@@ -13,6 +13,12 @@ if (!isset($_SESSION['username'])) {
 
 $current_user = $_SESSION['username'];
 
+// One-time reveal: shown only on the page load right after signup, then
+// gone for good - only its hash is stored, so this is the only chance
+// to see it.
+$new_recovery_key = $_SESSION['show_recovery_key'] ?? null;
+unset($_SESSION['show_recovery_key']);
+
 function classify(bool $important, bool $urgent): int {
     if ($important && $urgent) {
         return 1;
@@ -99,6 +105,14 @@ $completed_count = count(array_filter($tasks, fn($t) => (int) $t['completed'] ==
 <body>
     <div class="container">
         <h1>Concierge</h1>
+
+        <?php if ($new_recovery_key !== null): ?>
+            <div class="recovery-banner">
+                <p class="recovery-title">Save your recovery key now &mdash; it will not be shown again</p>
+                <p class="recovery-key"><?= htmlspecialchars($new_recovery_key) ?></p>
+                <p class="recovery-note">You'll need this to reset your password or clear a lockout. Write it down or save it in a text file somewhere outside this app.</p>
+            </div>
+        <?php endif; ?>
 
         <div class="account-bar">
             <span>Logged in as <strong><?= htmlspecialchars($current_user) ?></strong></span>

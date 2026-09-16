@@ -55,13 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 log_login_attempt($db, $username, false);
             }
         } else {
-            $stmt = $db->prepare('INSERT INTO users (username, password_hash) VALUES (:username, :hash)');
+            $recovery_key = generate_recovery_key();
+            $stmt = $db->prepare('
+                INSERT INTO users (username, password_hash, recovery_key_hash)
+                VALUES (:username, :hash, :recovery_hash)
+            ');
             $stmt->execute([
                 'username' => $username,
                 'hash' => password_hash($password, PASSWORD_DEFAULT),
+                'recovery_hash' => password_hash($recovery_key, PASSWORD_DEFAULT),
             ]);
             log_login_attempt($db, $username, true);
             $_SESSION['username'] = $username;
+            $_SESSION['show_recovery_key'] = $recovery_key;
             header('Location: index.php');
             exit;
         }
@@ -103,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <p class="empty-state">New here? Just enter a username and password and we'll set up your account.</p>
+        <p class="empty-state"><a href="recover.php" class="logout-link">Forgot your password or locked out?</a></p>
     </div>
 </body>
 </html>
