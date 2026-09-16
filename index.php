@@ -3,6 +3,15 @@
 const DB_FILE = __DIR__ . '/concierge.sqlite';
 const USER_COOKIE = 'concierge_user';
 
+// Case/whitespace-insensitive so "Alex", "alex", and "ALEX " all resolve
+// to the same task list instead of silently creating separate ones.
+function normalize_username(string $username): string {
+    return strtolower(trim($username));
+}
+
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+
 function get_db(): PDO {
     $is_new = !file_exists(DB_FILE);
     $db = new PDO('sqlite:' . DB_FILE);
@@ -59,11 +68,11 @@ function is_due_soon(string $due_date, int $days = 7): bool {
 }
 
 $db = get_db();
-$current_user = trim($_COOKIE[USER_COOKIE] ?? '');
+$current_user = normalize_username($_COOKIE[USER_COOKIE] ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['set_username'])) {
-        $username = trim($_POST['username'] ?? '');
+        $username = normalize_username($_POST['username'] ?? '');
         if ($username !== '') {
             setcookie(USER_COOKIE, $username, time() + 60 * 60 * 24 * 365, '/');
         }
